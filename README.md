@@ -18,3 +18,4 @@
 	- Implemented a simple neural network with a single hidden layer.
 	- Implemented **error back-propagation** algorithm for training.
 	- *Numpy* used for convenience of calculation.
+	- Testing program: a simple letter recognition problem (only distinguishing two different letters like 'O' and 'X') with straightforward features.
