@@ -87,8 +87,8 @@ class NeuralNetwork(object):
                 x_ = x_.reshape((1, self.d))
                 hid_est, y_est = self.estimate(x_)
                 error = self.back_propagate(hid_est, y_est, x_, y_, rate)
-            if i % 10 == 0:
-                print("round %d: %.8f" % (i, error))
+            if i % 50 == 0:
+                print("  Epoch %d/%d - loss: %.8f" % (i, itr,error))
 
     def test(self, x_test):
         """

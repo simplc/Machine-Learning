@@ -2,23 +2,20 @@ from neural_network import NeuralNetwork
 import numpy as np
 
 
-def init():
-    data_file = "data_nn\\letter-recognition.data"
+def init_data(ch1, ch2):
+    data_file = "data\\letter-recognition.data"
     fp = open(data_file, "r+")
 
     x, y = [], []
     while True:
-        try:
-            line = fp.readline().strip().split(',')
-            char = ord(line[0]) - ord('A') + 1
-
-            # O or X
-            if char == 15 or char == 24:
-                y.append(0 if char == 15 else 1)
-                x.append([int(ch) for ch in line[1:]])
-
-        except:
+        line = fp.readline().strip().split(',')
+        if not line[0]:
             break
+        char = line[0]
+
+        if char == ch1 or char == ch2:
+            y.append(0 if char == ch1 else 1)  # binary choice
+            x.append([int(ch) for ch in line[1:]])
 
     total = len(y)
 
@@ -38,11 +35,12 @@ def init():
     return x_train, y_train, x_test, y_test
 
 
-if __name__ == '__main__':
-    itr = 100
-    rate = 0.2
-    x_train, y_train, x_test, y_test = init()
-    nn_obj = NeuralNetwork(16, 10, 1)
+def bin_classifier(ch1, ch2, itr, rate):
+
+    print("Classifier for %c and %c..." % (ch1, ch2))
+
+    x_train, y_train, x_test, y_test = init_data(ch1, ch2)
+    nn_obj = NeuralNetwork(16, 16, 1)
     nn_obj.train(x_train, y_train, itr, rate)
     y_est = nn_obj.test(x_test)
 
@@ -52,5 +50,10 @@ if __name__ == '__main__':
         if est == test:
             right += 1
 
-    print(right / y_test.shape[0])
+    print("\tPrediction accuracy: %.8f" % (right / y_test.shape[0]))
+
+
+if __name__ == '__main__':
+    bin_classifier('O', 'X', itr=500, rate=0.2)
+    bin_classifier('O', 'D', itr=500, rate=0.2)
 
